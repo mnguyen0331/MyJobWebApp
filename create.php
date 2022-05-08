@@ -15,9 +15,9 @@
 
 // Variables for connecting to the database
 define("DB_SERVER", "localhost");
-define"DB_USER", "");  // what's the username here?
-define("DB_PWD", "");  // what password?
-define("DB_NAME", "");  // Need a name for this database
+define"DB_USER", "astro");
+define("DB_PWD", "fvXAd9k");
+define("DB_NAME", "myjob");
 
 
 /**  validateData
@@ -36,7 +36,7 @@ function validateData($data) {
 }
 
 
-// Make calls to the validate function
+// Make calls to the validate function and submit into database
 if ( isset($_POST['submit_form']) ) {
 	$firstName = validateData( $_POST['fname'] );
 	$lastName = validateData( $_POST['lname'] );
