@@ -1,59 +1,27 @@
 <?php
 
-/**
- * Project: CPSC 332-02 Project
- * 
- * File: create.php
- * Programmer: Florentino Becerra
- * Date: 05/06/2022
- * 
- * Description: This function handles account creations by taking user input
- * and by sanitizing the input
- * and proceeds to make an attempt to submit the information into the database
- */
-
-
 // Define constants
 define("DB_SERVER", "localhost");
-define"DB_USER", "astro");
-define("DB_PWD", "fvXAd9k");
+define("DB_USER", "myjob_user");
+define("DB_PWD", "rvXTj4I7");
 define("DB_NAME", "myjob");
 
 
-/**  validateData
- * This function is responsible for sanitizing all input prior to being submitted into the database
- * 
- * @return: Sanitized data
- */
-
-function validateData($data) {
-	$data = trim($data);
-	$data = stripslashes($data);
-	$data = strip_tags($data);
-	$data = htmlspecialchars($data);
-
-	return $data;
-}
-
-
 // Did data not get entered?
-if ( !isset($_POST['fname']) || !isset($_POST['lname']) || !isset($_POST['email']) || !isset($_POST['phone']) || !isset($_POST['password']) ) {
+if ( !(isset($_POST['fname'])) || !(isset($_POST['lname'])) || !(isset($_POST['email'])) || !(isset($_POST['phone'])) || !(isset($_POST['password'])) ) {
 	// Display an error message and exit
-	echo "<p>ERROR: Fields are empty.</p>";
+	echo "ERROR: Fields are empty.";
 	exit();
 }
 
-
-// Make calls to the validate function and submit into database
-$firstName = validateData( $_POST['fname'] );
-$lastName = validateData( $_POST['lname'] );
-$emailAddress = validateData( $_POST['email'] );
-$phoneNumber = validateData( $_POST['phone'] );
-$password = validateData( $_POST['password'] );
+$firstName = $_POST['fname'];
+$lastName = $_POST['lname'];
+$emailAddress = $_POST['email'];
+$phoneNumber = $_POST['phone'];
+$password = $_POST['password'];
+	$timestamp = date("Y-m-d H:i:s");
 
 // Now connect to MySQL improved
-// the "i" stands for improved apparently, so use this in future
-// other methods of connecting are depricated
 $db = new mysqli(DB_SERVER, DB_USER, DB_PWD, DB_NAME);
 // some basic error checking
 if ($db->connect_errno) {
@@ -61,23 +29,19 @@ if ($db->connect_errno) {
 	exit();
 }
 
-// Insertion query
-	$insertionQuery = "INSERT INTO user_data VALUES (?, ?, ?, ?, ?)";
-// Prepared statements
-$prepStatement = $db->prepare( $query );
-$prepStatement->bind_param('sssss', $firstName, $lastName, $emailAddress, $phoneNumber, $password);
-// Execute this query now
-$prepStatement->execute();
+// Maybe make a selection of database?
+$db->select_db(DB_NAME);
 
-// Check for errors
-if ($prepStatement->affected_rows > 0) {
-	echo "<p>Successfully created account.</p>";
-} else {
-	echo "<p>An error occured. Account not created.</p>";
-	exit();
+// Insertion query
+$insertionQuery = "INSERT INTO User (FirstName, LastName, Email, PhoneNumber, Password, timestamp) VALUES ('" . $firstName ."','" . $lastName ."','" . $emailAddress ."','" . $phoneNumber ."','" . $password ."','" . $timestamp ."')";
+// Standard query function
+$result = $db->query($insertionQuery);
+
+// Check for success
+if ($result) {
+	header("location:registration-success.html");
 }
 
-// Take a bow; clear the stage
 $db->close();
 
 ?>
