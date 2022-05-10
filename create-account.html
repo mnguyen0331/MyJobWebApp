@@ -11,9 +11,10 @@
 
 <main role="main">
 <h1>Create MyJob Account</h1>
-<p>Fill in the form below to provision your account.</p>
+<p>Fill in the form below to provision an account.</p>
 
 <div class="acctForm">
+<div id="errMsg" aria-live="polite"></div>
 <form role="form" action="create.php" method="post" onsubmit="return validate();">
 <label for="firstName">First Name: </label>
 <input type="text" id="firstName" name="fname" required><br>
@@ -30,9 +31,9 @@
 <label for="pw">Password: </label>
 <input type="password" id="pw" name="password" required><br>
 
-<input type="submit" name="submit_form" value="submit">
+<input type="submit" value="submit">
 </form>
-<div id="errMsg" aria-live="polite"></div>
+</div>
 
 </main>
 
