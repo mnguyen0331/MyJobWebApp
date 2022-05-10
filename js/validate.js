@@ -49,7 +49,7 @@ function formValidate() {
 		return false;
 	}
 
-	if (!(phoneExp.test(phoneNumber.value)) ) {
+	if (!(phoneExp.test(phoneNumber.value))) {
 		errorMsg = "Invalid phone number.";
 		formError.innerHTML = errorMsg;
 		return false;
