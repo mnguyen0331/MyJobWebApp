@@ -66,6 +66,10 @@ CREATE TABLE `Job` (
   `JobId` int NOT NULL,
   `Title` varchar(50) NOT NULL,
   `Description` varchar(50) NOT NULL,
+  `Address` varchar(50) NOT NULL,
+  `City` varchar(50) NOT NULL,
+  `State` char(2) NOT NULL,
+  `Zipcode` char(5) NOT NULL,
   `Qualifications` varchar(50) NOT NULL,
   `Responsibilities` varchar(50) NOT NULL,
   `EducationLevelId` int NOT NULL,
@@ -75,10 +79,6 @@ CREATE TABLE `Job` (
   `SalaryRangeId` int NOT NULL,
   `DatePosted` Date NOT NULL,
   `Deadline` Date NOT NULL,
-  `Address` varchar(50) NOT NULL,
-  `City` varchar(50) NOT NULL,
-  `State` char(2) NOT NULL,
-  `Zipcode` char(5) NOT NULL,
   `TimeStamp` TimeStamp DEFAULT current_timestamp ON UPDATE current_timestamp,
   PRIMARY KEY (`JobId`),
   FOREIGN KEY (`EducationLevelId`) REFERENCES `EducationLevel`(`EducationLevelId`),
@@ -88,12 +88,23 @@ CREATE TABLE `Job` (
 );
 
 CREATE TABLE `JobBenefits` (
-  `JobId` int,
-  `BenefitsId` int,
+  `JobId` int NOT NULL,
+  `BenefitsId` int NOT NULL,
   `TimeStamp` TimeStamp DEFAULT current_timestamp ON UPDATE current_timestamp,
   PRIMARY KEY (`JobId`, `BenefitsId`),
   FOREIGN KEY (`BenefitsId`) REFERENCES `Benefits`(`BenefitsId`),
   FOREIGN KEY (`JobId`) REFERENCES `Job`(`JobId`)
+);
+
+CREATE TABLE `User` (
+  `UserId` int NOT NULL,
+  `Email` varchar(50) unique NOT NULL,
+  `FirstName` varchar(50) NOT NULL,
+  `LastName` varchar(50) NOT NULL,
+  `PhoneNumber` char(10) NOT NULL,
+  `Password` varchar(50) NOT NULL,
+  `TimeStamp` TimeStamp DEFAULT current_timestamp ON UPDATE current_timestamp,
+  PRIMARY KEY (`UserId`)
 );
 
 CREATE TABLE `EmployerRole` (
@@ -111,39 +122,31 @@ INSERT INTO `EmployerRole` VALUES (6,'Recruiter',DEFAULT);
 INSERT INTO `EmployerRole` VALUES (7,'Other',DEFAULT);
 
 CREATE TABLE `Employer` (
-  `EmployerId` int,
-  `UserId` int,
-  `CompanyName` varchar(50),
-  `CompanyEmail` varchar(50),
-  `CompanyPhoneNumber` char(10),
-  `AddressId` int,
-  `RoleId` int,
+  `UserId` int NOT NULL,
+  `CompanyName` varchar(50) NOT NULL,
+  `CompanyEmail` varchar(50) NOT NULL,
+  `CompanyPhoneNumber` char(10) NOT NULL,
+  `Address` varchar(50),
+  `City` varchar(50),
+  `State` char(2),
+  `Zipcode` char(5),
+  `RoleId` int NOT NULL,
   `TimeStamp` TimeStamp DEFAULT current_timestamp ON UPDATE current_timestamp,
-  PRIMARY KEY (`EmployerId`),
-  FOREIGN KEY (`RoleId`) REFERENCES `EmployerRole`(`RoleId`)
+  PRIMARY KEY (`UserId`),
+  FOREIGN KEY (`RoleId`) REFERENCES `EmployerRole`(`RoleId`),
+  FOREIGN KEY (`UserId`) REFERENCES `User`(`UserId`)
 );
 
 CREATE TABLE `Employee` (
-  `EmployeeId` int,
-  `UserId` int,
+  `UserId` int NOT NULL,
   `TimeStamp` TimeStamp DEFAULT current_timestamp ON UPDATE current_timestamp,
-  PRIMARY KEY (`EmployeeId`)
-);
-
-CREATE TABLE `User` (
-  `UserId` int,
-  `Email` varchar(50),
-  `FirstName` varchar(50),
-  `LastName` varchar(50),
-  `PhoneNumber` char(10),
-  `TimeStamp` TimeStamp DEFAULT current_timestamp ON UPDATE current_timestamp,
-  `Password` varchar(50),
-  PRIMARY KEY (`UserId`)
+  PRIMARY KEY (`UserId`),
+  FOREIGN KEY (`UserId`) REFERENCES `User`(`UserId`)
 );
 
 CREATE TABLE `Status` (
-  `StatusId` int,
-  `StatusName` varchar(50),
+  `StatusId` int NOT NULL,
+  `StatusName` varchar(50) NOT NULL,
   `TimeStamp` TimeStamp DEFAULT current_timestamp ON UPDATE current_timestamp,
   PRIMARY KEY (`StatusId`)
 );
@@ -153,11 +156,21 @@ INSERT INTO `Status` VALUES (3,'Interviewed',DEFAULT);
 INSERT INTO `Status` VALUES (4,'Accepted',DEFAULT);
 
 CREATE TABLE `UserApplyJob` (
-  `UserId` int,
-  `JobId` int,
-  `StatusId` int,
+  `UserId` int NOT NULL,
+  `JobId` int NOT NULL,
+  `StatusId` int NOT NULL,
   `TimeStamp` TimeStamp DEFAULT current_timestamp ON UPDATE current_timestamp,
   PRIMARY KEY (`UserId`, `JobId`),
-  FOREIGN KEY (`StatusId`) REFERENCES `Status`(`StatusId`),
+  FOREIGN KEY (`UserId`) REFERENCES `User`(`UserId`),
+  FOREIGN KEY (`JobId`) REFERENCES `Job`(`JobId`),
+  FOREIGN KEY (`StatusId`) REFERENCES `Status`(`StatusId`)
+);
+
+CREATE TABLE `EmployerPostJob` (
+  `UserId` int NOT NULL,
+  `JobId` int NOT NULL,
+  `TimeStamp` TimeStamp DEFAULT current_timestamp ON UPDATE current_timestamp,
+  PRIMARY KEY (`UserId`, `JobId`),
+  FOREIGN KEY (`UserId`) REFERENCES `Employer`(`UserId`),
   FOREIGN KEY (`JobId`) REFERENCES `Job`(`JobId`)
 );
