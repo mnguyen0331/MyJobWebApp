@@ -1,10 +1,41 @@
 <?php
 
+/**
+ * Project: CPSC 332-02 MyJob Project (Spring 2022)
+ * 
+ * File: create.php
+ * Programmer: Florentino Becerra
+ * Date: 05/08/2022
+ * Revised: 05/09/2022
+ * 
+ * This script is responsible for taking user information
+ * and validating and sanitizing it
+ * It then proceeds to make the insertion into the database
+ */
+
+
 // Define constants
 define("DB_SERVER", "localhost");
 define("DB_USER", "myjob_user");
 define("DB_PWD", "rvXTj4I7");
 define("DB_NAME", "myjob");
+
+
+/**  validateData
+ * This function does a quick sanitization of data
+ * passed through from a form
+ * 
+ * @return: Data that is sanitized
+ */
+
+function validateData($data) {
+	$data = trim($data);
+	$data = stripslashes($data);
+	$data = htmlspecialchars($data);
+	$data = strip_tags($data);
+
+	return $data;
+}
 
 
 // Did data not get entered?
@@ -14,11 +45,22 @@ if ( !(isset($_POST['fname'])) || !(isset($_POST['lname'])) || !(isset($_POST['e
 	exit();
 }
 
-$firstName = $_POST['fname'];
-$lastName = $_POST['lname'];
-$emailAddress = $_POST['email'];
-$phoneNumber = $_POST['phone'];
-$password = $_POST['password'];
+// Quick validation/sanitization
+$firstName = validateData($_POST['fname']);
+$lastName = validateData($_POST['lname']);
+
+// Quick sanitization and validation
+$email = $_POST['email'];
+$emailAddress = filter_var($email, FILTER_SANITIZE_EMAIL);
+if (filter_var($emailAddress,  FILTER_VALIDATE_EMAIL)) {
+	echo "Email address is valid.";
+} else {
+	echo "Email is invalid.";
+	exit();
+}
+
+$phoneNumber = validateData($_POST['phone']);
+$password = validateData($_POST['password']);
 	$timestamp = date("Y-m-d H:i:s");
 
 // Now connect to MySQL improved
@@ -29,7 +71,7 @@ if ($db->connect_errno) {
 	exit();
 }
 
-// Maybe make a selection of database?
+// Select the database
 $db->select_db(DB_NAME);
 
 // Insertion query
