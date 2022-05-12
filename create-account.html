@@ -31,6 +31,38 @@
 <label for="pw">Password: </label>
 <input type="password" id="pw" name="password" required><br>
 
+<label for="empQuestion">Are you an employer?</label>
+<select id="empQuestion" name="employerStatus" onchange="showAdditionalFields();" required>
+<option>Select an Option</option>
+<option value="yes">Yes</option>
+<option value="no">No</option>
+</select>
+
+<!-- Fields will be enabled as needed via javaScript -->
+<label for="compName">Company Name: </label>
+<input type="text" id="compName" name="companyName" disabled><br>
+
+<label for="compEmail">Company Email: </label>
+<input type="email" id="compEmail" name="compEmail" disabled><br>
+
+<label for="compPhone">Company Phone Number: </label>
+<input type="text" id="compPhone" name="companyPhone" disabled><br>
+
+<label for="compAddress">Company Address (optional): </label>
+<input type="text" id="compAddress" name="companyAddress" disabled><br>
+
+<label for="empRole">Employer Role: </label>
+<select id="empRole" name="employerRole" disabled><br>
+<option>Select one</option>
+<option value="owner">Owner</option>
+<option value="ceo">CEO</option>
+<option value="manager">Assistant / Manager</option>
+<option value="hr">Human Resources Generalist</option>
+<option value="hiringMgr">Hiring Manager</option>
+<option value="recruiter">Recruiter</option>
+<option value="other">Other</option>
+</select>
+
 <input type="submit" value="submit">
 </form>
 </div>

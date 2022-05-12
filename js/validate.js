@@ -4,6 +4,7 @@
  * File: validate.js
  * Programmer: Florentino Beceerra
  * Date: 05/06/2022
+ * Revised: 05/11/2022
  * 
  * This script performs client-side form validation
  * prior to the data being sent to the server for additional sanitization
@@ -59,10 +60,40 @@ function formValidate() {
 		errorMsg = "Password must be 8 or more characters.";
 		formError.innerHTML = errorMsg;
 		return false;
+	}
+
+}
+
+function showAdditionalFields() {
+	let employerQuestion = document.getElementById("empQuestion");
+	let dataFields = document.querySelectorAll("#compName, #compEmail, #compPhone, #compAddress");
+
+	if (employerQuestion.options[employerQuestion.selectedIndex].value === "yes") {
+		document.getElementById("compName").removeAttribute("disabled");
+		document.getElementById("compName").setAttribute("required", "");
+		document.getElementById("compEmail").removeAttribute("disabled");
+		document.getElementById("compEmail").setAttribute("required", "");
+		document.getElementById("compPhone").removeAttribute("disabled");
+		document.getElementById("compPhone").setAttribute("required", "");
+		document.getElementById("compAddress").removeAttribute("disabled");
+		document.getElementById("empRole").removeAttribute("disabled");
+		document.getElementById("empRole").setAttribute("required", "");
 	} else {
-		errorMsg = "";
-		formError.innerHTML = errorMsg;
-		return true;
+		document.getElementById("compName").setAttribute("disabled", "");
+		document.getElementById("compName").removeAttribute("required");
+		document.getElementById("compEmail").setAttribute("disabled", "");
+		document.getElementById("compEmail").removeAttribute("required");
+		document.getElementById("compPhone").setAttribute("disabled", "");
+		document.getElementById("compPhone").removeAttribute("required");
+		document.getElementById("compAddress").setAttribute("disabled", "");
+		document.getElementById("empRole").setAttribute("disabled", "");
+		document.getElementById("empRole").removeAttribute("required");
+		document.getElementById("empRole").value = null;
+
+		// Clear fields
+		dataFields.forEach(input => {
+			input.value = "";
+		});
 	}
 
 }
