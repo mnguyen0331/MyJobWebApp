@@ -23,7 +23,9 @@ function formValidate() {
 	let firstName = document.getElementById("firstName");
 	let lastName = document.getElementById("lastName");
 	let emailAddress = document.getElementById("emailAddr");
+	let companyEmail = document.getElementById("compEmail");
 	let phoneNumber = document.getElementById("phoneNum");
+	let companyPhone = document.getElementById("compPhone");
 	let password = document.getElementById("pw");
 	let formError = document.getElementById("errMsg");
 
@@ -36,7 +38,7 @@ function formValidate() {
 		errorMsg = "First name cannot be blank.";
 		formError.innerHTML = errorMsg;
 		return false;
-	}
+	} 
 
 	if ((lastName.value === null) || (lastName.value === "")) {
 		errorMsg = "Last name field cannot be blank.";
@@ -62,7 +64,31 @@ function formValidate() {
 		return false;
 	}
 
+	if (!(emailExp.test(companyEmail.value))) {
+		errorMsg = "Invalid email address.";
+		formError.innerHTML = errorMsg;
+		return false;
+	}
+
+	if (!(phoneExp.test(companyPhone.value))) {
+		errorMsg = "Invalid phone number.";
+		formError.innerHTML = errorMsg;
+		return false;
+	} else {
+		errorMsg = "";
+		formError.innerHTML = errorMsg;
+		return true;
+	}
+
 }
+
+
+/**  showAdditionalFields
+ * This function takes actions on showing or hiding
+ * the additional fields for the account creation form
+ * 
+ * @return: void
+ */
 
 function showAdditionalFields() {
 	let employerQuestion = document.getElementById("empQuestion");

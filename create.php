@@ -61,7 +61,28 @@ if (filter_var($emailAddress,  FILTER_VALIDATE_EMAIL)) {
 
 $phoneNumber = validateData($_POST['phone']);
 $password = validateData($_POST['password']);
-	$timestamp = date("Y-m-d H:i:s");
+$companyName = "";
+$companyEmail = "";
+$companyPhone = "";
+$companyAddress = "";
+$companyRole = "";
+
+// Check if it is empty
+if ( !isset($_POST['companyName']) || !isset($_POST['companyEmail']) || !isset($_POST['companyPhone']) || !isset($_POST['companyAddress']) || !isset($_POST['companyRole']) ) {
+	$companyName = NULL;
+	$companyEmail = NULL;
+	$companyPhone = NULL;
+	$companyAddress = NULL;
+	$companyRole = NULL;
+} else {
+	$companyName = validateData($_POST['companyName']);
+	$companyEmail = validateData($_POST['companyEmail']);
+	$companyPhone = validateData($_POST['companyPhone']);
+	$companyAddress = validateData($_POST['companyAddress']);
+	$employerRole = filter_input(INPUT_POST, "employerRole", FILTER_SANITIZE_STRING);
+}
+$timestamp = date("Y-m-d H:i:s");
+
 
 // Now connect to MySQL improved
 $db = new mysqli(DB_SERVER, DB_USER, DB_PWD, DB_NAME);
@@ -75,12 +96,14 @@ if ($db->connect_errno) {
 $db->select_db(DB_NAME);
 
 // Insertion query
-$insertionQuery = "INSERT INTO User (FirstName, LastName, Email, PhoneNumber, Password, timestamp) VALUES ('" . $firstName ."','" . $lastName ."','" . $emailAddress ."','" . $phoneNumber ."','" . $password ."','" . $timestamp ."')";
+$userInsertion = "INSERT INTO User (FirstName, LastName, Email, PhoneNumber, Password, timestamp) VALUES ('" . $firstName ."','" . $lastName ."','" . $emailAddress ."','" . $phoneNumber ."','" . $password ."','" . $timestamp ."')";
+$employerInsertion = "INSERT INTO Employer (CompanyName, CompanyEmail, CompanyPhoneNumber, CompanyAddress, EmployerRole, TimeStamp) VALUES ('" . $companyName ."','" . $companyEmail ."','" . $companyPhone ."','" . $companyAddress ."','" . $employerRole ."','" . $timestamp ."')";
 // Standard query function
-$result = $db->query($insertionQuery);
+$result1 = $db->query($userInsertion);
+$result2 = $db->query($employerInsertion);
 
 // Check for success
-if ($result) {
+if ($result1 && $result2) {
 	header("location:registration-success.html");
 }
 
