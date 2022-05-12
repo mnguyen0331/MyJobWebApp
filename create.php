@@ -61,26 +61,12 @@ if (filter_var($emailAddress,  FILTER_VALIDATE_EMAIL)) {
 
 $phoneNumber = validateData($_POST['phone']);
 $password = validateData($_POST['password']);
-$companyName = "";
-$companyEmail = "";
-$companyPhone = "";
-$companyAddress = "";
-$companyRole = "";
+$companyName = validateData($_POST['companyName']);
+$companyEmail = validateData($_POST['companyEmail']);
+$companyPhone = validateData($_POST['companyPhone']);
+$companyAddress = validateData($_POST['companyAddress']);
+$employerRole = filter_input(INPUT_POST, "employerRole", FILTER_SANITIZE_STRING);
 
-// Check if it is empty
-if ( !isset($_POST['companyName']) || !isset($_POST['companyEmail']) || !isset($_POST['companyPhone']) || !isset($_POST['companyAddress']) || !isset($_POST['companyRole']) ) {
-	$companyName = NULL;
-	$companyEmail = NULL;
-	$companyPhone = NULL;
-	$companyAddress = NULL;
-	$companyRole = NULL;
-} else {
-	$companyName = validateData($_POST['companyName']);
-	$companyEmail = validateData($_POST['companyEmail']);
-	$companyPhone = validateData($_POST['companyPhone']);
-	$companyAddress = validateData($_POST['companyAddress']);
-	$employerRole = filter_input(INPUT_POST, "employerRole", FILTER_SANITIZE_STRING);
-}
 $timestamp = date("Y-m-d H:i:s");
 
 
