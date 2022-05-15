@@ -1,0 +1,38 @@
+/** A basic CSS form.*/
+
+/*Remove focus.*/
+input:focus {
+	outline: none;
+}
+
+/*Attempt to format the text inputs.*/
+input[type="text"]:focus {
+	background-color: #4b0082;
+	color: white;
+	width: 100%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	box-sizing: border-box;
+	border: 2px solid; white;
+	border-radius: 4px;
+}
+
+input[type=email] {
+	background-color: #4b0082;
+	color: white;
+	width: 100%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	box-sizing: border-box;
+	border: 2px solid; white;
+	border-radius: 4px;
+}
+
+/*Style the select elements.*/
+select {
+	width: 100%;
+	padding: 16px 20px;
+	border: none;
+	border-radius: 4px;
+	background-color: #f1f1f1;
+}
