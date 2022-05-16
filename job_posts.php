@@ -44,7 +44,10 @@
     </form>
             <br />
     <?php
+    if (!isset($_POST['ID'])) {
     $ID = $_POST["ID"];
+    $unmae= "root";
+    $User = "SELECT UserId FROM User WHERE user_name='$uname'";
     $timestamp = date("Y-m-d H:i:s");
 
     $mysqli = mysqli_connect("localhost", "root", "", "myjob");
@@ -53,17 +56,17 @@
       printf("<p>No JobID located with that number</p>");
     } else {
         printf("<p>Job Found</p>");
-        $insert = "INSERT INTO UserApplyJob (UserId, JobId, StatusId, TimeStamp) VALUES ('" . $ID ."','" . $ID ."','" . $ID  ."','" . $timestamp ."')";
+        $insert = "INSERT INTO UserApplyJob (UserId, JobId, StatusId, TimeStamp) VALUES ('" . $ID ."','" . $User ."','" .  'In Review'  ."','" . $timestamp ."')";
         if ($insert) {
             printf("<p>Application Sent!</p>");
         }
 
     }
     $mysqli->close();
+    }
     ?>
 
     <br /><br />
     <nav role=navigation><a href=Apply.php>Done Applying? - Click here</a></nav>
     <br /><br /><br />
-    The error below can be ignored, it will go away when you put in a number in the button above, could not find solution in time
 </html>
