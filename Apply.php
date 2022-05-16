@@ -3,12 +3,11 @@
 
 <head>
 <meta charset="utf-8">
-<title>Application Sent!</title>
+<title>Application</title>
 </head>
 
 <main role="main">
-<h1>Application Sent in!</h1>
-<p>Best of luck :)</p>
+<h1>Good luck on your Applications</h1>
 </main>
 
 <body>

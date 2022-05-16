@@ -14,7 +14,7 @@
             <th> Salary Range </th>
             <th> Day Posted </th>
             <th> Deadline </th>
-            <th> Apply </th>
+            <th> JobID </th>
         </tr>
         <?php
             $conn = mysqli_connect("localhost", "root", "", "myjob");
@@ -25,14 +25,45 @@
                 while ($row = $result-> fetch_assoc()) {
                     echo "<tr><td>" . $row["Title"] . "</td><td>" . $row["Description"] . "</td><td>" . $row["Address"]," ",$row["City"]," ",$row["State"],", ",$row["Zipcode"]  . "</td><td>" . $row["Qualifications"] . "</td><td>" 
                     . $row["Responsibilities"] . "</td><td>" . $row["EducationLevelId"] . "</td><td>" . $row["JobTypeId"] . "</td><td>" . $row["ContactDetaills"] 
-                    . "</td><td>" . $row["ExperienceLevelId"] . "</td><td>" . $row["SalaryRangeId"] . "</td><td>" . $row["DatePosted"] . "</td><td>" . $row["Deadline"] . "</td><td>" . "<nav role=navigation><a href=Apply.php>Apply</a></nav>" . "</td></tr>";
+                    . "</td><td>" . $row["ExperienceLevelId"] . "</td><td>" . $row["SalaryRangeId"] . "</td><td>" . $row["DatePosted"] . "</td><td>" . $row["Deadline"] . "</td><td>" .  $row["JobId"] . "</td></tr>";
                 }
             }
             else {
                 echo "No Results";
             }
-            $conn->close();
+
         ?>
         </table>
     </body>
+
+    <br />
+    Insert the Job ID for the Job you wish to apply for:<br />
+    <form action="job_posts.php" method="post">
+       <input type="text" name="ID"> 
+        <button type="submit">Submit</button>
+    </form>
+            <br />
+    <?php
+    $ID = $_POST["ID"];
+    $timestamp = date("Y-m-d H:i:s");
+
+    $mysqli = mysqli_connect("localhost", "root", "", "myjob");
+    $result = $mysqli->query("SELECT JobId FROM Job WHERE JobId = $ID");
+    if($result->num_rows == 0) {
+      printf("<p>No JobID located with that number</p>");
+    } else {
+        printf("<p>Job Found</p>");
+        $insert = "INSERT INTO UserApplyJob (UserId, JobId, StatusId, TimeStamp) VALUES ('" . $ID ."','" . $ID ."','" . $ID  ."','" . $timestamp ."')";
+        if ($insert) {
+            printf("<p>Application Sent!</p>");
+        }
+
+    }
+    $mysqli->close();
+    ?>
+
+    <br /><br />
+    <nav role=navigation><a href=Apply.php>Done Applying? - Click here</a></nav>
+    <br /><br /><br />
+    The error below can be ignored, it will go away when you put in a number in the button above, could not find solution in time
 </html>
